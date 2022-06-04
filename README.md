@@ -1,2 +1,2 @@
 # HypeLab.Libraries
-Collection of developer tools targeting .net
+A collection of developer tools targeting .net
