@@ -15,8 +15,8 @@ Console.WriteLine($"Old string:{Environment.NewLine}{tst}" +
 	
 	
 // Old string:
-// *Hi i do tes#TS s@ds a\a  b/b°?mlkm*
+// Hi i do tes#TS s@ds a\a  b/b°?mlkm
 
 // New string:
-// *Hi i do tesTS sds a - a  b - b?mlkm*
+// Hi i do tesTS sds a - a  b - b?mlkm
 ```
