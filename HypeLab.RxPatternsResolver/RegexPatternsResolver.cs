@@ -5,6 +5,9 @@ using System.Text.RegularExpressions;
 
 namespace HypeLab.RxPatternsResolver
 {
+	/// <summary>
+	/// Class capable of solve collections of regex patterns given an input string. Also equipped with a default patterns set.
+	/// </summary>
 	public class RegexPatternsResolver
 	{
 		private IDictionary<int, RegexPatternInstance>? _patterns;
@@ -12,16 +15,30 @@ namespace HypeLab.RxPatternsResolver
 
 		private readonly RegexOptions RegexOption = RegexOptions.None;
 
+		/// <summary>
+		/// Class initialization without parameters. Must add patterns before resolve a string.
+		/// </summary>
 		public RegexPatternsResolver() { }
 
-		public RegexPatternsResolver(string pattern, string replacement, RegexOptions regexOption)
+		/// <summary>
+		/// Class initialization with essential parameters.
+		/// </summary>
+		/// <param name="pattern"></param>
+		/// <param name="replacement"></param>
+		public RegexPatternsResolver(string pattern, string replacement)
 		{
-			RegexOption = regexOption;
 			AddPattern(pattern, replacement);
 		}
 
-		public RegexPatternsResolver(string pattern, string replacement)
+		/// <summary>
+		/// Class initialization with all parameters.
+		/// </summary>
+		/// <param name="pattern"></param>
+		/// <param name="replacement"></param>
+		/// <param name="regexOption"></param>
+		public RegexPatternsResolver(string pattern, string replacement, RegexOptions regexOption)
 		{
+			RegexOption = regexOption;
 			AddPattern(pattern, replacement);
 		}
 
@@ -31,6 +48,7 @@ namespace HypeLab.RxPatternsResolver
 		/// </summary>
 		/// <param name="pattern"></param>
 		/// <param name="replacement"></param>
+		/// <param name="regexOption"></param>
 		/// <exception cref="ArgumentNullException"></exception>
 		public void AddPattern(string pattern, string replacement, RegexOptions? regexOption = null)
 		{
@@ -50,7 +68,7 @@ namespace HypeLab.RxPatternsResolver
 		/// <returns>
 		/// Throws exception if patterns collection is null.
 		/// Returns just input string if patterns collection is empty.
-		/// Otherwise return the elaborated string.
+		/// Otherwise returns the elaborated string.
 		/// </returns>
 		/// <exception cref="ArgumentException"></exception>
 		/// <exception cref="Exception"></exception>

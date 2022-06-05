@@ -1,51 +1,65 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <!-- Identifier that must be unique within the hosting gallery -->
+		<id>HypeLab.RxPatternsResolver</id>
+		<version>0.0.5</version>
+		<title>HypeLab.RxPatternsResolver</title>
+		<authors>HypeLab</authors>
+		<owners>Pietro Matteo Peru</owners>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<license type="expression">MIT</license>
+		<projectUrl>https://github.com/mperu92/HypeLab.Libraries/tree/main/HypeLab.RxPatternsResolver</projectUrl>
+		<description>Provides a class capable of solving collections of regex patterns given an input string. Also equipped with a default pattern set</description>
+		<releaseNotes>Added package configurations</releaseNotes>
+		<copyright>Copyright ©2022 HypeLab</copyright>
+		<language>en-US</language>
+		<tags>regex, regular expressions, c#, .net standard 2.1</tags>
+		
+        <!-- Identifier that must be unique within the hosting gallery --><!--
         <id>HypeLab.RxPatternsResolver</id>
-        <!-- Package version number that is used when resolving dependencies -->
+        --><!-- Package version number that is used when resolving dependencies --><!--
         <version>0.0.4</version>
 
-        <!-- Authors contain text that appears directly on the gallery -->
+        --><!-- Authors contain text that appears directly on the gallery --><!--
         <authors>HypeLab</authors>
 
-        <!-- 
+        --><!-- 
             Owners are typically nuget.org identities that allow gallery
             users to easily find other packages by the same owners.  
-        -->
+        --><!--
          <owners>Pietro Matteo Peru</owners> 
         
-         <!-- Project URL provides a link for the gallery -->
+         --><!-- Project URL provides a link for the gallery --><!--
         <projectUrl>http://github.com/contoso/UsefulStuff</projectUrl>
 
-         <!-- License information is displayed on the gallery -->
+         --><!-- License information is displayed on the gallery --><!--
         <license type="expression">MIT</license>
         
 
-        <!-- Icon is used in Visual Studio's package manager UI -->
-        <!--<icon>icon.png</icon>-->
+        --><!-- Icon is used in Visual Studio's package manager UI --><!--
+        --><!--<icon>icon.png</icon>--><!--
 
-        <!-- 
+        --><!-- 
             If true, this value prompts the user to accept the license when
             installing the package. 
-        -->
+        --><!--
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
 
-        <!-- Any details about this particular release -->
+        --><!-- Any details about this particular release --><!--
         <releaseNotes>Added package configurations</releaseNotes>
 
-        <!-- 
+        --><!-- 
             The description can be used in package manager UI. Note that the
             nuget.org gallery uses information you add in the portal. 
-        -->
+        --><!--
         <description>Provides a class capable of solving collections of regex patterns given an input string. Also equipped with a default pattern set</description>
 
-        <!-- Copyright information -->
+        --><!-- Copyright information --><!--
         <copyright>Copyright ©2022 HypeLab</copyright>
 
-        <!-- Tags appear in the gallery and can be used for tag searches -->
+        --><!-- Tags appear in the gallery and can be used for tag searches --><!--
 		<tags>regular expression</tags>
-		<tags>regex</tags>
+		<tags>regex</tags>-->
 
         <!-- Dependencies are automatically installed when the package is installed -->
         <!--<dependencies>
