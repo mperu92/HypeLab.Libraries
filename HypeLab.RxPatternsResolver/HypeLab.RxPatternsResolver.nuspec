@@ -9,17 +9,17 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<license type="expression">MIT</license>
 		<projectUrl>https://github.com/mperu92/HypeLab.Libraries/tree/main/HypeLab.RxPatternsResolver</projectUrl>
-		<description>Provides a class capable of solving collections of regex patterns given an input string. Also equipped with a default pattern set</description>
+		<description>Provides a class capable of solve collections of regex patterns given an input string. Also equipped with a default patterns set.</description>
 		<releaseNotes>Added package configurations</releaseNotes>
 		<copyright>Copyright ©2022 HypeLab</copyright>
 		<language>en-US</language>
 		<tags>regex, regular expressions, c#, .net standard 2.1</tags>
 		
         <!-- Identifier that must be unique within the hosting gallery --><!--
-        <id>HypeLab.RxPatternsResolver</id>
-        --><!-- Package version number that is used when resolving dependencies --><!--
+        <id>HypeLab.RxPattsion number that is used when resolving dependencies --><!--
         <version>0.0.4</version>
-
+ernsResolver</id>
+        --><!-- Package ver
         --><!-- Authors contain text that appears directly on the gallery --><!--
         <authors>HypeLab</authors>
 
