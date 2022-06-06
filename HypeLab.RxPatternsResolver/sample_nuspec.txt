@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<!--<?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
 		<id>HypeLab.RxPatternsResolver</id>
@@ -15,7 +15,7 @@
 		<language>en-US</language>
 		<tags>regex, regular expressions, c#, .net standard 2.1</tags>
 		
-        <!-- Identifier that must be unique within the hosting gallery --><!--
+        --><!-- Identifier that must be unique within the hosting gallery --><!--
         <id>HypeLab.RxPattsion number that is used when resolving dependencies --><!--
         <version>0.0.4</version>
 ernsResolver</id>
@@ -59,17 +59,17 @@ ernsResolver</id>
 
         --><!-- Tags appear in the gallery and can be used for tag searches --><!--
 		<tags>regular expression</tags>
-		<tags>regex</tags>-->
+		<tags>regex</tags>--><!--
 
-        <!-- Dependencies are automatically installed when the package is installed -->
-        <!--<dependencies>
+        --><!-- Dependencies are automatically installed when the package is installed --><!--
+        --><!--<dependencies>
             <dependency id="Newtonsoft.Json" version="9.0" />
-        </dependencies>-->
+        </dependencies>--><!--
     </metadata>
 
-    <!-- A readme.txt to display when the package is installed -->
-    <!--<files>
+    --><!-- A readme.txt to display when the package is installed --><!--
+    --><!--<files>
         <file src="readme.txt" target="" />
         <file src="icon.png" target="" />
-    </files>-->
-</package>
+    </files>--><!--
+</package>-->
