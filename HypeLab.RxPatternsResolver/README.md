@@ -26,15 +26,13 @@ Console.WriteLine($"Old string:{Environment.NewLine}{tst}" +
 // Hi i do tesTS sds a - a  b - b?mlkm
 ```
 
-**(optional) Register type**
+## (optional) Register type
 
 based on the version of the framework in use:
 ```c#
+// based on the version of the framework in use:
 builder.Services.AddRegexResolver();
-```
-
-or
-```c#
+// or
 services.AddRegexResolver();
 ```
 
