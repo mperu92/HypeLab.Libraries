@@ -10,8 +10,7 @@ namespace HypeLab.RxPatternsResolver
 	/// </summary>
 	public class RegexPatternsResolver
 	{
-		private IDictionary<int, RegexPatternInstance>? _patterns;
-		private int _index;
+		private Stack<RegexPatternInstance>? _patterns;
 
 		private readonly RegexOptions RegexOption = RegexOptions.None;
 
@@ -47,10 +46,13 @@ namespace HypeLab.RxPatternsResolver
 			if (string.IsNullOrWhiteSpace(pattern))
 				throw new ArgumentException("Input string cannot be null or empty", nameof(pattern));
 
-			(_patterns ??= new Dictionary<int, RegexPatternInstance>())
-				.Add(_index, new RegexPatternInstance() { Pattern = pattern, Replacement = replacement, RegexOption = regexOption ?? RegexOption });
+			if (_patterns == null)
+				_patterns = new Stack<RegexPatternInstance>();
 
-			_index++;
+			_patterns!.Push(new RegexPatternInstance()
+			{
+				Pattern = pattern, Replacement = replacement, RegexOption = regexOption ?? RegexOption
+			});
 		}
 
 		/// <summary>
@@ -76,10 +78,10 @@ namespace HypeLab.RxPatternsResolver
 			{
 				if (_patterns!.Count > 0)
 				{
-					foreach (KeyValuePair<int, RegexPatternInstance> pattern in _patterns!)
+					foreach (RegexPatternInstance pattern in _patterns!)
 					{
-						Regex codeTitleRegex = new Regex (pattern.Value.Pattern, pattern.Value.RegexOption);
-						resolvedString = codeTitleRegex.Replace(resolvedString, pattern.Value.Replacement ?? string.Empty);
+						Regex codeTitleRegex = new Regex (pattern.Pattern, pattern.RegexOption);
+						resolvedString = codeTitleRegex.Replace(resolvedString, pattern.Replacement ?? string.Empty);
 					}
 				}
 
