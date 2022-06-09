@@ -115,17 +115,18 @@ namespace HypeLab.RxPatternsResolver
 
             try
 			{
+				EmailChecker emailChecker = new EmailChecker();
+
 				// Normalize the domain
-				email = Regex.Replace(email, "(@)(.+)$", RxResolverHelper.DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
-
-				bool isMatch = Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
-
-                if (isMatch)
+                if (emailChecker.IsValidEmailAddress(email.NormalizeEmailDomain()))
                 {
-					EmailCheckerStatus checkDomain = EmailChecker.CheckDomain(email);
+					EmailCheckerStatus checkDomain = emailChecker.IsDomainValid(email);
 
 					if (checkDomain == EmailCheckerStatus.DOMAIN_NOT_VALID)
-						return new EmailCheckerResponse("domain is not valid", checkDomain);
+						return new EmailCheckerResponse($"domain \"{email.GetDomain()}\" is not valid.", checkDomain);
+
+					if (!emailChecker.EmailExists())
+						return new EmailCheckerResponse($"\"{email}\" doesn't exists");
 
 					return new EmailCheckerResponse("email is valid");
                 }

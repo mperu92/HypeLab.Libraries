@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 
 namespace HypeLab.RxPatternsResolver.Helpers
 {
-    internal static class RxResolverHelper
+    internal static class EmailHelper
     {
-        internal static string DomainMapper(Match match)
+        internal static string NormalizeEmailDomain(this string email)
+        {
+            return Regex.Replace(email, "(@)(.+)$", DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
+        }
+
+        private static string DomainMapper(Match match)
         {
             // Use IdnMapping class to convert Unicode domain names.
             IdnMapping idn = new IdnMapping();
