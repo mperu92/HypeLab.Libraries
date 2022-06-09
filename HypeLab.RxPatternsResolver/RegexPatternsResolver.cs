@@ -1,6 +1,8 @@
-﻿using HypeLab.RxPatternsResolver.Models;
+﻿using HypeLab.RxPatternsResolver.Helpers;
+using HypeLab.RxPatternsResolver.Models;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace HypeLab.RxPatternsResolver
@@ -96,5 +98,50 @@ namespace HypeLab.RxPatternsResolver
 				throw new Exception(ex.Message, ex.InnerException);
 			}
 		}
-	}
+
+		/// <summary>
+		/// Determines whether the email format is valid for an email address,
+		/// check if domain is valid,
+		/// check if email address is exists.
+		/// ref: https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+		/// </summary>
+		/// <param name="email"></param>
+		/// <exception cref="RegexMatchTimeoutException"></exception>
+		/// <exception cref="Exception"></exception>
+		public EmailCheckerResponse IsValidEmail(string email)
+        {
+			if (string.IsNullOrWhiteSpace(email))
+                return new EmailCheckerResponse("input string is null or empty", EmailCheckerStatus.INPUT_NULL_OR_EMPTY);
+
+            try
+			{
+				// Normalize the domain
+				email = Regex.Replace(email, "(@)(.+)$", RxResolverHelper.DomainMapper, RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
+				bool isMatch = Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
+
+                if (isMatch)
+                {
+					EmailCheckerStatus checkDomain = EmailChecker.CheckDomain(email);
+
+					if (checkDomain == EmailCheckerStatus.DOMAIN_NOT_VALID)
+						return new EmailCheckerResponse("domain is not valid", checkDomain);
+
+					return new EmailCheckerResponse("email is valid");
+                }
+                else
+                {
+                    return new EmailCheckerResponse("email address is not valid", EmailCheckerStatus.EMAIL_NOT_VALID);
+                }
+			}
+			catch (RegexMatchTimeoutException e)
+			{
+				throw new RegexMatchTimeoutException(e.Message, e.InnerException);
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message, e.InnerException);
+			}
+        }
+    }
 }
