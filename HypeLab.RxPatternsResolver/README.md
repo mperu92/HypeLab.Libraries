@@ -1,6 +1,30 @@
 # HypeLab.RxPatternsResolver
 Provides a class capable of solve collections of regex patterns given an input string. Also equipped with a default patterns set.
+Also exposes a method that validateS the email address format and optionally validates domain.
 
+## (optional) Register type
+
+based on the version of the framework in use:
+```c#
+builder.Services.AddRegexResolver();
+// or
+services.AddRegexResolver();
+```
+
+**Using with DI**
+```c#
+
+public class Class1
+{
+	private readonly RegexPatternsResolver _rxResolver;
+	
+	public Class1(RegexPatternsResolver rxResolver)
+	{
+		_rxResolver = rxResolver;
+	}
+}
+
+## Using pattern resolver
 ```c#
 using HypeLab.RxPatternsResolver;
 using HypeLab.RxPatternsResolver.Constants;
@@ -26,26 +50,14 @@ Console.WriteLine($"Old string:{Environment.NewLine}{tst}" +
 // Hi i do tesTS sds a - a  b - b?mlkm
 ```
 
-## (optional) Register type
-
-based on the version of the framework in use:
+## Email address validation
 ```c#
-// based on the version of the framework in use:
-builder.Services.AddRegexResolver();
-// or
-services.AddRegexResolver();
-```
+    EmailCheckerResponse resp = await RegexPatternsResolver.IsValidEmailAsync("john.doe@gmail.com", checkDomain: true).ConfigureAwait(false);
 
-**Using with DI**
-```c#
+    Console.WriteLine($"{resp.Message} - Status: {resp.ResponseStatus}");
+    // OUTPUT: john.doe@gmail.com results as a valid email address - Status: EMAIL_VALID
 
-public class Class1
-{
-	private readonly RegexPatternsResolver _rxResolver;
-	
-	public Class1(RegexPatternsResolver rxResolver)
-	{
-		_rxResolver = rxResolver;
-	}
-}
+    EmailCheckerResponse resp2 = RegexPatternsResolver.IsValidEmail("john.doe@gmail.com");
+    Console.WriteLine($"{resp2.Message} - Status: {resp2.ResponseStatus}");
+    // OUTPUT: john.doe@gmail.com results as a valid email address - Status: EMAIL_VALID
 ```
