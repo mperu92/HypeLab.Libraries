@@ -53,7 +53,7 @@ Console.WriteLine($"Old string:{Environment.NewLine}{tst}" +
 
 ## Email address validation
 ```c#
-	RegexPatternsResolver resolver = new();
+    RegexPatternsResolver resolver = new();
     EmailCheckerResponse resp = await resolver.IsValidEmailAsync("john.doe@gmail.com", checkDomain: true).ConfigureAwait(false);
 
     Console.WriteLine($"{resp.Message} - Status: {resp.ResponseStatus}");
