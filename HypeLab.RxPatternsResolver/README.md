@@ -52,12 +52,13 @@ Console.WriteLine($"Old string:{Environment.NewLine}{tst}" +
 
 ## Email address validation
 ```c#
-    EmailCheckerResponse resp = await RegexPatternsResolver.IsValidEmailAsync("john.doe@gmail.com", checkDomain: true).ConfigureAwait(false);
+	RegexPatternsResolver resolver = new();
+    EmailCheckerResponse resp = await resolver.IsValidEmailAsync("john.doe@gmail.com", checkDomain: true).ConfigureAwait(false);
 
     Console.WriteLine($"{resp.Message} - Status: {resp.ResponseStatus}");
     // OUTPUT: john.doe@gmail.com results as a valid email address - Status: EMAIL_VALID
 
-    EmailCheckerResponse resp2 = RegexPatternsResolver.IsValidEmail("john.doe@gmail.com");
+    EmailCheckerResponse resp2 = resolver.IsValidEmail("john.doe@gmail.com");
     Console.WriteLine($"{resp2.Message} - Status: {resp2.ResponseStatus}");
     // OUTPUT: john.doe@gmail.com results as a valid email address - Status: EMAIL_VALID
 ```
