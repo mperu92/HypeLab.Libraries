@@ -1,12 +1,14 @@
-﻿using HypeLab.RxPatternsResolver.Models;
+﻿using HypeLab.RxPatternsResolver.Enums;
+using HypeLab.RxPatternsResolver.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HypeLab.RxPatternsResolver.Interfaces
 {
     internal interface IEmailDomainChecker
     {
-        EmailCheckerStatus IsDomainValid(string domain);
+        Task<EmailCheckerStatus> IsDomainValidAsync(string checkUrl);
     }
 }

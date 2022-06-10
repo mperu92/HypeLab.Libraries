@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace HypeLab.RxPatternsResolver.Helpers
 {
-    internal static class EmailHelper
+    internal static class RxResolverHelper
     {
         internal static string NormalizeEmailDomain(this string email)
         {

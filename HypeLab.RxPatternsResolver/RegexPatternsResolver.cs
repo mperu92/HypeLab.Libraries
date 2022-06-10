@@ -1,16 +1,19 @@
 ﻿using HypeLab.RxPatternsResolver.Helpers;
+using HypeLab.RxPatternsResolver.Interfaces;
 using HypeLab.RxPatternsResolver.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace HypeLab.RxPatternsResolver
 {
 	/// <summary>
 	/// Class capable of solve collections of regex patterns given an input string. Also equipped with a default patterns set.
 	/// </summary>
-	public class RegexPatternsResolver
+	public class RegexPatternsResolver : IEmailValidator
 	{
 		private Stack<RegexPatternInstance>? _patterns;
 
@@ -108,7 +111,7 @@ namespace HypeLab.RxPatternsResolver
 		/// <param name="email"></param>
 		/// <exception cref="RegexMatchTimeoutException"></exception>
 		/// <exception cref="Exception"></exception>
-		public EmailCheckerResponse IsValidEmail(string email)
+		public async Task<EmailCheckerResponse> IsValidEmail(string email)
         {
 			if (string.IsNullOrWhiteSpace(email))
                 return new EmailCheckerResponse("input string is null or empty", EmailCheckerStatus.INPUT_NULL_OR_EMPTY);
@@ -120,7 +123,8 @@ namespace HypeLab.RxPatternsResolver
 				// Normalize the domain
                 if (emailChecker.IsValidEmailAddress(email.NormalizeEmailDomain()))
                 {
-					EmailCheckerStatus checkDomain = emailChecker.IsDomainValid(email);
+					EmailCheckerStatus checkDomain =
+						await emailChecker.IsDomainValidAsync(EmailHelper.RetrieveRequestUrlWIthGivenDomain(email.GetDomain()));
 
 					if (checkDomain == EmailCheckerStatus.DOMAIN_NOT_VALID)
 						return new EmailCheckerResponse($"domain \"{email.GetDomain()}\" is not valid.", checkDomain);
@@ -135,6 +139,14 @@ namespace HypeLab.RxPatternsResolver
                     return new EmailCheckerResponse("email address is not valid", EmailCheckerStatus.EMAIL_NOT_VALID);
                 }
 			}
+			catch (ArgumentNullException e)
+			{
+				throw new ArgumentNullException(e.Message, e.InnerException);
+			}
+			catch (HttpRequestException e)
+            {
+				throw new HttpRequestException(e.Message, e.InnerException);
+            }
 			catch (RegexMatchTimeoutException e)
 			{
 				throw new RegexMatchTimeoutException(e.Message, e.InnerException);

@@ -1,9 +1,12 @@
-﻿using HypeLab.RxPatternsResolver.Interfaces;
+﻿using HypeLab.RxPatternsResolver.Enums;
+using HypeLab.RxPatternsResolver.Interfaces;
 using HypeLab.RxPatternsResolver.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace HypeLab.RxPatternsResolver.Helpers
 {
@@ -19,9 +22,29 @@ namespace HypeLab.RxPatternsResolver.Helpers
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
         }
 
-        public EmailCheckerStatus IsDomainValid(string domain)
+        public async Task<EmailCheckerStatus> IsDomainValidAsync(string checkUrl)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using HttpClient client = new HttpClient();
+                string content = await client.GetStringAsync(checkUrl);
+                if (!string.IsNullOrEmpty(content))
+                    return EmailCheckerStatus.DOMAIN_NOT_VALID;
+
+                return EmailCheckerStatus.DOMAIN_VALID;
+            }
+            catch (ArgumentNullException)
+            {
+                throw;
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

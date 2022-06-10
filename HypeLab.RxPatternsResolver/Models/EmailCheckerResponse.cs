@@ -29,6 +29,10 @@ namespace HypeLab.RxPatternsResolver.Models
         /// given input string is null or empty
         /// </summary>
         INPUT_NULL_OR_EMPTY,
+        /// <summary>
+        /// domain is valid
+        /// </summary>
+        DOMAIN_VALID,
     }
 
     /// <summary>
