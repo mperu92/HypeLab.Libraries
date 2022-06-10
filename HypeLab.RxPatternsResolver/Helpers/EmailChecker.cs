@@ -1,6 +1,7 @@
 ﻿using HypeLab.RxPatternsResolver.Enums;
 using HypeLab.RxPatternsResolver.Interfaces;
 using HypeLab.RxPatternsResolver.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -14,7 +15,8 @@ namespace HypeLab.RxPatternsResolver.Helpers
     {
         public bool EmailExists()
         {
-            throw new NotImplementedException();
+            // todo
+            return true;
         }
 
         public bool IsValidEmailAddress(string email)
@@ -22,16 +24,21 @@ namespace HypeLab.RxPatternsResolver.Helpers
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250));
         }
 
-        public async Task<EmailCheckerStatus> IsDomainValidAsync(string checkUrl)
+        public async Task<EmailCheckerResponseStatus> IsDomainValidAsync(string checkUrl)
         {
             try
             {
                 using HttpClient client = new HttpClient();
-                string content = await client.GetStringAsync(checkUrl);
-                if (!string.IsNullOrEmpty(content))
-                    return EmailCheckerStatus.DOMAIN_NOT_VALID;
+                HttpResponseMessage response = await client.GetAsync(checkUrl).ConfigureAwait(false);
+                response.EnsureSuccessStatusCode();
 
-                return EmailCheckerStatus.DOMAIN_VALID;
+                EmailCheckerApiResponse apiResponse =
+                    JsonConvert.DeserializeObject<EmailCheckerApiResponse>(await response.Content.ReadAsStringAsync().ConfigureAwait(false));
+
+                if (apiResponse.Status != 0)
+                    return EmailCheckerResponseStatus.DOMAIN_NOT_VALID;
+
+                return EmailCheckerResponseStatus.DOMAIN_VALID;
             }
             catch (ArgumentNullException)
             {

@@ -13,7 +13,7 @@ namespace HypeLab.RxPatternsResolver
 	/// <summary>
 	/// Class capable of solve collections of regex patterns given an input string. Also equipped with a default patterns set.
 	/// </summary>
-	public class RegexPatternsResolver : IEmailValidator
+	public class RegexPatternsResolver : IEmailValidable
 	{
 		private Stack<RegexPatternInstance>? _patterns;
 
@@ -103,18 +103,21 @@ namespace HypeLab.RxPatternsResolver
 		}
 
 		/// <summary>
-		/// Determines whether the email format is valid for an email address,
-		/// check if domain is valid,
-		/// check if email address is exists.
-		/// ref: https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+		/// Determines whether the email format is valid for an email address.
+		/// Also offers the possibility to check email domain sending a request to the google dns to verify if domain is valid.
+		/// see: https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+		/// see: https://developers.google.com/speed/public-dns/docs/doh
 		/// </summary>
 		/// <param name="email"></param>
+		/// <param name="checkDomain"></param>
+		/// <exception cref="ArgumentNullException"></exception>
+		/// <exception cref="HttpRequestException"></exception>
 		/// <exception cref="RegexMatchTimeoutException"></exception>
 		/// <exception cref="Exception"></exception>
-		public async Task<EmailCheckerResponse> IsValidEmail(string email)
+		public async Task<EmailCheckerResponse> IsValidEmailAsync(string email, bool checkDomain = false)
         {
 			if (string.IsNullOrWhiteSpace(email))
-                return new EmailCheckerResponse("input string is null or empty", EmailCheckerStatus.INPUT_NULL_OR_EMPTY);
+                return new EmailCheckerResponse("input string is null or empty", EmailCheckerResponseStatus.INPUT_NULL_OR_EMPTY);
 
             try
 			{
@@ -123,20 +126,20 @@ namespace HypeLab.RxPatternsResolver
 				// Normalize the domain
                 if (emailChecker.IsValidEmailAddress(email.NormalizeEmailDomain()))
                 {
-					EmailCheckerStatus checkDomain =
-						await emailChecker.IsDomainValidAsync(EmailHelper.RetrieveRequestUrlWIthGivenDomain(email.GetDomain()));
+					if (checkDomain)
+                    {
+						EmailCheckerResponseStatus domainStatus =
+                            await emailChecker.IsDomainValidAsync(EmailHelper.RetrieveRequestUrlWithGivenDomain(email.GetDomain())).ConfigureAwait(false);
 
-					if (checkDomain == EmailCheckerStatus.DOMAIN_NOT_VALID)
-						return new EmailCheckerResponse($"domain \"{email.GetDomain()}\" is not valid.", checkDomain);
+						if (domainStatus == EmailCheckerResponseStatus.DOMAIN_NOT_VALID)
+							return new EmailCheckerResponse($"domain \"{email.GetDomain()}\" is not valid.", domainStatus);
+					}
 
-					if (!emailChecker.EmailExists())
-						return new EmailCheckerResponse($"\"{email}\" doesn't exists");
-
-					return new EmailCheckerResponse("email is valid");
+					return new EmailCheckerResponse($"{email} results as a valid email address");
                 }
                 else
                 {
-                    return new EmailCheckerResponse("email address is not valid", EmailCheckerStatus.EMAIL_NOT_VALID);
+                    return new EmailCheckerResponse("email address is not valid", EmailCheckerResponseStatus.EMAIL_NOT_VALID);
                 }
 			}
 			catch (ArgumentNullException e)
@@ -156,5 +159,38 @@ namespace HypeLab.RxPatternsResolver
 				throw new Exception(e.Message, e.InnerException);
 			}
         }
+
+		/// <summary>
+		/// Determines whether the email format is valid for an email address.
+		/// see: https://docs.microsoft.com/en-us/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+		/// see: https://developers.google.com/speed/public-dns/docs/doh
+		/// </summary>
+		/// <param name="email"></param>
+		/// <exception cref="RegexMatchTimeoutException"></exception>
+		/// <exception cref="Exception"></exception>
+		public EmailCheckerResponse IsValidEmail(string email)
+        {
+			if (string.IsNullOrWhiteSpace(email))
+				return new EmailCheckerResponse("input string is null or empty", EmailCheckerResponseStatus.INPUT_NULL_OR_EMPTY);
+
+			try
+			{
+				EmailChecker emailChecker = new EmailChecker();
+
+				// Normalize the domain
+				if (emailChecker.IsValidEmailAddress(email.NormalizeEmailDomain()))
+					return new EmailCheckerResponse($"{email} results as a valid email address");
+				else
+					return new EmailCheckerResponse("email address is not valid", EmailCheckerResponseStatus.EMAIL_NOT_VALID);
+			}
+			catch (RegexMatchTimeoutException e)
+			{
+				throw new RegexMatchTimeoutException(e.Message, e.InnerException);
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message, e.InnerException);
+			}
+		}
     }
 }

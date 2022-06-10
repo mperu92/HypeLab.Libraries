@@ -6,16 +6,18 @@ using System.Text;
 
 namespace HypeLab.RxPatternsResolver.Helpers
 {
-    internal static partial class EmailHelper
+    internal static class EmailHelper
     {
+        internal const string requestUrl = "https://dns.google.com/resolve?name={0}&type={1}";
+
         internal static string GetDomain(this string email)
         {
             return new MailAddress(email).Host;
         }
 
-        internal static string RetrieveRequestUrlWIthGivenDomain(string domain, DnsDomainType domainType = DnsDomainType.MX)
+        internal static string RetrieveRequestUrlWithGivenDomain(string domain, DnsDomainType domainType = DnsDomainType.MX)
         {
-            return $"https://dns.google.com/resolve?name={domain}&type={domainType}";
+            return string.Format(requestUrl, domain, domainType);
         }
     }
 }

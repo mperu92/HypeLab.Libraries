@@ -7,7 +7,7 @@ namespace HypeLab.RxPatternsResolver.Models
     /// <summary>
     /// Enum that represents the possible status could be returned
     /// </summary>
-    public enum EmailCheckerStatus
+    public enum EmailCheckerResponseStatus
     {
         /// <summary>
         /// email is valid
@@ -45,7 +45,7 @@ namespace HypeLab.RxPatternsResolver.Models
         /// </summary>
         /// <param name="message"></param>
         /// <param name="status"></param>
-        public EmailCheckerResponse(string message, EmailCheckerStatus status = EmailCheckerStatus.EMAIL_VALID)
+        public EmailCheckerResponse(string message, EmailCheckerResponseStatus status = EmailCheckerResponseStatus.EMAIL_VALID)
         {
             Message = message;
             ResponseStatus = status;
@@ -59,6 +59,6 @@ namespace HypeLab.RxPatternsResolver.Models
         /// <summary>
         /// Status of the email after check
         /// </summary>
-        public EmailCheckerStatus ResponseStatus { get; }
+        public EmailCheckerResponseStatus ResponseStatus { get; }
     }
 }

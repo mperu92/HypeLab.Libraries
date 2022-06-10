@@ -9,6 +9,6 @@ namespace HypeLab.RxPatternsResolver.Interfaces
 {
     internal interface IEmailDomainChecker
     {
-        Task<EmailCheckerStatus> IsDomainValidAsync(string checkUrl);
+        Task<EmailCheckerResponseStatus> IsDomainValidAsync(string checkUrl);
     }
 }
