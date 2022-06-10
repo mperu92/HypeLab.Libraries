@@ -23,6 +23,7 @@ public class Class1
 		_rxResolver = rxResolver;
 	}
 }
+```
 
 ## Using pattern resolver
 ```c#
