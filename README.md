@@ -1,2 +1,1 @@
-# HypeLab.Libraries
-A collection of developer tools targeting .net
+# Moved to https://github.com/hype-lab/DotNetLibraries
